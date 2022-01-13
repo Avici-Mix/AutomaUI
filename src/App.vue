@@ -1,9 +1,13 @@
 <template>
-  <div id="app">
-    Hello World!
-    <el-empty description="这里是空的"></el-empty>
-  </div>
+  <div>{{ $t('home') }}</div>
 </template>
-<script>
 
+<script>
+export default {};
 </script>
+<i18n>
+en: 
+  home: "HOME"
+zh:
+  home: "首页"
+</i18n>
