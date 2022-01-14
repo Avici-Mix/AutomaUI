@@ -1,13 +1,38 @@
 <template>
-  <div>{{ $t('home') }}</div>
+  <div class="app">
+    <el-container>
+      <el-header class="header">
+        <header-bar></header-bar>
+      </el-header>
+      <el-main class="body">
+        <body-content></body-content>
+      </el-main>
+    </el-container>
+  </div>
 </template>
 
 <script>
-export default {};
+import HeaderBar from "./components/header.vue";
+import BodyContent from "./components/body.vue";
+
+export default {
+  components: {
+    HeaderBar,
+    BodyContent,
+  },
+};
 </script>
-<i18n>
-en: 
-  home: "HOME"
-zh:
-  home: "首页"
-</i18n>
+
+
+<style lang="scss" scoped>
+.app {
+  .header {
+    padding: 0;
+  }
+  .body {
+    height: 100%;
+    width: 100%;
+    background-color: #f6f6f6;
+  }
+}
+</style>
