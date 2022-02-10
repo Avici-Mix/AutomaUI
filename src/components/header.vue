@@ -7,12 +7,18 @@
       <el-menu-item index="QuestionPage">{{ $t("QuestionPage") }}</el-menu-item>
       <el-menu-item index="InfoPage">{{ $t("InfoPage") }}</el-menu-item>
     </el-menu>
+    <user-bar></user-bar>
   </div>
 </template>
 
 <script>
+import userBar from "./user/userbar.vue";
+
 export default {
   name: "headBar",
+  components: {
+    userBar,
+  },
   data() {
     return {
       defaultIndex: "HomePage",
@@ -45,7 +51,7 @@ export default {
     padding: 10px;
   }
 }
-</style>
+</style>  
 
 
 <i18n>
