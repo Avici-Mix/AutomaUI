@@ -37,8 +37,13 @@
 </template>
 
 <script>
+import UserService from "../../service/userService"
+
 export default {
   name: "register",
+  created(){
+    console.log(11,UserService);
+  },
   data() {
     const $t = this.$t.bind(this);
     return {
@@ -86,7 +91,6 @@ export default {
   },
   methods: {
     submitForm(form) {
-      console.log(11, this.$refs);
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.handleRegister();
@@ -100,6 +104,7 @@ export default {
         this.form.password = "";
         this.form.passwordConfirm = "";
       }
+      UserService.post();
     },
   },
 };

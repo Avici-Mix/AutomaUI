@@ -6,7 +6,10 @@ import VueI18n from "vue-i18n";
 import router  from './router/router.js'
 
 import { Message } from 'element-ui'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
+Vue.use(VueAxios, axios)
 
 Vue.prototype.$message = Message
 Vue.use(VueI18n);
