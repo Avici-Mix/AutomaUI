@@ -33,6 +33,7 @@ export default {
   display: flex;
   flex-direction: row;
   height: 60px;
+  background: white;
   .text {
     display: flex;
     justify-self: center;

@@ -48,7 +48,7 @@ module.exports = {
         use: ["vue-style-loader", "css-loader", "sass-loader"],
       },
       {
-        test: /\.(png|jpg|gif|eot|woff|ttf|svg|webp|PNG)(\?\S*)?$/,
+        test: /\.(png|jpg|gif|eot|woff|woff2|ttf|svg|webp|PNG)(\?\S*)?$/,
         loader: "url-loader",
         options: {
           limit: 1024,

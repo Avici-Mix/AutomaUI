@@ -37,12 +37,12 @@
 </template>
 
 <script>
-import UserService from "../../service/userService"
+import UserService from "../../service/userService";
 
 export default {
   name: "register",
-  created(){
-    console.log(11,UserService);
+  created() {
+    console.log(11, UserService);
   },
   data() {
     const $t = this.$t.bind(this);
@@ -104,7 +104,17 @@ export default {
         this.form.password = "";
         this.form.passwordConfirm = "";
       }
-      UserService.post();
+      const params = {
+        username: this.form.username,
+        password: this.form.password,
+        email: this.form.email,
+      };
+      try {
+        const data = UserService.post(params);
+        this.$message.success("")
+      } catch (error) {
+        this.$message.error(error);
+      }
     },
   },
 };
@@ -130,6 +140,7 @@ zh:
     nameLength: 长度在 1 到 18 个字符
     correctEmail: 请输入正确的邮箱地址
     passwordDiff: 两次输入的密码不一致
+  registerSuccess: 注册成功！
 en:
   title: User Registration 
   username: username
@@ -143,4 +154,5 @@ en:
     nameLength: Contains 1 to 18 characters
     correctEmail: Please enter the correct email address
     passwordDiff: Entered passwords differ
+  registerSuccess: registered successfully!
 </i18n>
