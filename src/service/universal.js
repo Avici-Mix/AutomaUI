@@ -1,25 +1,21 @@
-import axios from "axios";
+import request from "@/request";
 
 export default class Universal {
   constructor(url) {
     this.url = url;
   }
 
-  instance = axios.create({
-    baseURL: "http://192.168.1.6:9090",
-    crossdomain: true,
-  });
+  async post(url, params) {
+    if (!url) {
+      url = this.url;
+    }
+    return request.post(url, params);
+  }
 
-  post(params) {
-    this.instance
-      .post(this.url, params)
-      .then(function(response) {
-        console.log(response);
-        const { data } = response;
-        return data;
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+  get(url, params) {
+    if (!url) {
+      url = this.url;
+    }
+    return request.get(url, params);
   }
 }

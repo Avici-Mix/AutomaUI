@@ -2,20 +2,30 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
 module.exports = {
-  entry: "./src/index.js", 
+  entry: "./src/index.js",
   output: {
-    filename: "[name].js", 
+    filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
   },
   devServer: {
     static: path.resolve(__dirname, "dist"),
     open: true,
-    port: 8880, 
+    port: 8880,
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
   },
-  mode: "development", 
+  resolve: {
+    extensions: [".js", ".vue", ".json"],
+    alias: {
+      "@": resolve("src"),
+    },
+  },
+  mode: "development",
   module: {
     rules: [
       {

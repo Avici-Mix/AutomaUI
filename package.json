@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Avici-Mix/AutomaUI#readme",
   "dependencies": {
+    "@babel/runtime": "^7.17.2",
     "axios": "^0.25.0",
     "es6-promise": "^4.2.8",
     "vue": "^2.6.14",

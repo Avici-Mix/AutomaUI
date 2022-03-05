@@ -4,7 +4,7 @@
       <el-header class="header">
         <header-bar></header-bar>
       </el-header>
-      <el-main class="bodyContent">
+      <el-main>
         <body-content></body-content>
       </el-main>
     </el-container>
@@ -25,14 +25,14 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-  background-color: #f6f6f6;
-  height: 100%;
+  background-color: #f5f5f5;
   .header {
     padding: 0;
   }
-  .bodyContent {
-    height: 100%;
-    width: 100%;
+  >>> {
+    .main  {
+      background-color: #f5f5f5;
+    }
   }
 }
 </style>

@@ -14,12 +14,15 @@
       label-position="left"
       label-width="80px"
     >
-      <el-form-item :label="$t('username')" prop="username">
-        <el-input v-model="form.username"></el-input>
+      <el-form-item :label="$t('account')" prop="account">
+        <el-input v-model="form.account"></el-input>
       </el-form-item>
-      <el-form-item :label="$t('email')" prop="email">
+      <el-form-item :label="$t('nickname')" prop="nickname">
+        <el-input v-model="form.nickname"></el-input>
+      </el-form-item>
+      <!-- <el-form-item :label="$t('email')" prop="email">
         <el-input v-model="form.email"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item :label="$t('password')" prop="password">
         <el-input v-model="form.password"></el-input>
       </el-form-item>
@@ -37,25 +40,30 @@
 </template>
 
 <script>
-import UserService from "../../service/userService";
-
 export default {
   name: "register",
-  created() {
-    console.log(11, UserService);
-  },
   data() {
     const $t = this.$t.bind(this);
     return {
       visible: false,
       form: {
-        username: "",
+        nickname: "",
         email: "",
         password: "",
         passwordConfirm: "",
+        account: "",
       },
       rules: {
-        username: [
+        account: [
+          { required: true, message: $t("rules.noEmpty") },
+          {
+            min: 1,
+            max: 18,
+            message: $t("rules.nameLength"),
+            trigger: "blur",
+          },
+        ],
+        nickname: [
           { required: true, message: $t("rules.noEmpty") },
           {
             min: 1,
@@ -89,29 +97,57 @@ export default {
       },
     };
   },
+  computed: {},
   methods: {
     submitForm(form) {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.handleRegister();
+          this.handleRegister(form);
         } else {
+          return;
         }
       });
     },
-    handleRegister() {
-      if (this.form.password != this.form.passwordConfirm) {
-        this.$message.warning(this.$t("rules.passwordDiff"));
+    async handleRegister(form) {
+      const $t = this.$t.bind(this);
+      const that = this;
+      if (form.password != form.passwordConfirm) {
+        this.$message.warning($t("rules.passwordDiff"));
         this.form.password = "";
         this.form.passwordConfirm = "";
       }
       const params = {
-        username: this.form.username,
-        password: this.form.password,
-        email: this.form.email,
+        nickname: form.nickname,
+        password: form.password,
+        account: form.account,
       };
       try {
-        const data = UserService.post(params);
-        this.$message.success("")
+        that.$store
+          .dispatch("register", params)
+          .then(() => {
+            that.$message({
+              message: $t("registerSuccess"),
+              type: "success",
+              showClose: true,
+            });
+            that.$store
+              .dispatch("getUserInfo")
+              .then(() => {})
+              .catch(() => {
+                that.$message({
+                  type: "warning",
+                  showClose: true,
+                  message: $t("LoginDate"),
+                });
+              });
+            that.visible = false;
+            that.$emit("closeLogin");
+          })
+          .catch((error) => {
+            if (error !== "error") {
+              that.$message({ message: error, type: "error", showClose: true });
+            }
+          });
       } catch (error) {
         this.$message.error(error);
       }
@@ -129,7 +165,8 @@ export default {
 <i18n>
 zh:
   title: 用户注册
-  username: 用户名
+  account: 账号
+  nickname: 昵称
   email: 邮箱
   password: 密码
   passwordConfirm: 确认密码
@@ -141,14 +178,17 @@ zh:
     correctEmail: 请输入正确的邮箱地址
     passwordDiff: 两次输入的密码不一致
   registerSuccess: 注册成功！
+  LoginDate: 登录已过期
 en:
   title: User Registration 
-  username: username
+  nickname: nickname
+  account: account
   email: email
   password: password
   passwordConfirm: comfirm password
   cancel: cancel
   register: register
+  LoginDate: Login expired
   rules:
     noEmpty: can not be empty 
     nameLength: Contains 1 to 18 characters
