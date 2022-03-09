@@ -17,13 +17,17 @@ const router = new VueRouter({
       component: () => import("../components/user/register.vue"),
       name: "register",
     },
+    {
+      path: "/view/:id",
+      component: () => import("../components/articleDetail/main.vue"),
+      name: "view",
+    }
   ],
 });
 
 const that = this;
 router.beforeEach((to, from, next) => {
   if(getToken){
-
     if (store.state.account.length === 0) {
       store
         .dispatch("getUserInfo")

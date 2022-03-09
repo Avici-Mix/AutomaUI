@@ -11,6 +11,7 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import Vuex from "vuex";
 
+import { formatTime } from "./utils/time";
 import "./assets/icon/iconfont.css";
 
 Vue.use(Vuex);
@@ -19,6 +20,8 @@ Vue.use(VueAxios, axios);
 Vue.prototype.$message = Message;
 Vue.use(VueI18n);
 Vue.use(ElementUI);
+
+Vue.filter('format',formatTime);
 
 const i18n = new VueI18n({
   locale: "zh", // 语言标识

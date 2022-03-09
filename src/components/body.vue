@@ -13,8 +13,8 @@
 </style>
 
 <script>
-import List from "./articles/list.vue";
-import articleSider from "./articles/articleSider.vue";
+import List from "./articleList/list.vue";
+import articleSider from "./articleList/articleSider.vue";
 export default {
   components: {
     List,

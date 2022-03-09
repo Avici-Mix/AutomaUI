@@ -13,6 +13,7 @@ service.interceptors.request.use(
   (config) => {
     if (store.state.token) {
       config.headers["Oauth-Token"] = getToken();
+      console.log(2222,getToken());
     }
     return config;
   },
@@ -23,6 +24,7 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
+    console.log('response',response);
     // 超时的全局处理
     if (response.headers["session_time_out"] == "timeout") {
       store.dispatch("fedLogOut");

@@ -4,6 +4,7 @@
       class="article"
       v-for="article in articleList"
       v-bind:key="article.title"
+      @click="toDetail(article.id)"
     >
       <div class="article_head">
         <div class="title">{{ article.title }}</div>
@@ -38,6 +39,7 @@
 
 <style lang="scss" scoped>
 .article {
+  cursor: pointer;
   background: white;
   padding: 10px 20px;
   width: 700px;
@@ -119,13 +121,16 @@ export default {
     this.getArticleList();
   },
   methods: {
+    toDetail(id) {
+      this.$router.push({ path: `/view/${id}` });
+    },
     async getArticleList() {
       const params = {
         page: 1,
         pageSize: 10,
       };
       try {
-        const {data} = await ArticleService.post('',params);
+        const { data } = await ArticleService.post("", params);
         if (data) {
           this.articleList = data;
         }
