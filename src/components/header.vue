@@ -1,7 +1,7 @@
 <template>
   <div class="headerBar">
-    <img class="icon" src="../images/robotIcon.png" alt="" />
-    <div class="text">Aumto</div>
+    <img class="icon" src="../images/robotIcon.png" @click="backHome" />
+    <div class="text" @click="backHome">Aumto</div>
     <el-menu :default-active="defaultIndex" mode="horizontal">
       <el-menu-item index="HomePage">{{ $t("homePage") }}</el-menu-item>
       <el-menu-item index="QuestionPage">{{ $t("QuestionPage") }}</el-menu-item>
@@ -25,6 +25,11 @@ export default {
       activeIndex2: "1",
     };
   },
+  methods: {
+    backHome() {
+      this.$router.push({ path: `/` });
+    },
+  },
 };
 </script>
 
@@ -35,6 +40,7 @@ export default {
   height: 60px;
   background: white;
   .text {
+    cursor: pointer;
     display: flex;
     justify-self: center;
     align-self: center;
@@ -49,11 +55,11 @@ export default {
     }
   }
   .icon {
+    cursor: pointer;
     padding: 10px;
   }
 }
-</style>  
-
+</style>
 
 <i18n>
 zh:

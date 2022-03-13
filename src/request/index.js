@@ -1,6 +1,7 @@
 import store from "@/store";
 import { getToken } from "./token";
 import axios from "axios";
+import { Message } from "element-ui";
 
 const service = axios.create({
   baseURL: "http://localhost:9091",
@@ -12,8 +13,7 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     if (store.state.token) {
-      config.headers["Oauth-Token"] = getToken();
-      console.log(2222,getToken());
+      config.headers["Authorization"] = getToken();
     }
     return config;
   },
@@ -40,7 +40,7 @@ service.interceptors.response.use(
 
       // 90002  用户未登录
       if (res.code === 90002) {
-        this.$message({
+        Message({
           type: "warning",
           showClose: true,
           message: "未登录或登录超时，请重新登录",
@@ -50,7 +50,7 @@ service.interceptors.response.use(
 
       //70001 权限认证错误
       if (res.code === 70001) {
-        this.$message({
+        Message({
           type: "warning",
           showClose: true,
           message: "你没有权限访问哦",
@@ -63,7 +63,7 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    this.$message({
+    Message({
       type: "warning",
       showClose: true,
       message: "连接超时",

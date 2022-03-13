@@ -31,6 +31,12 @@
           ></markdown-editor>
         </div>
       </div>
+      <comments
+        :comments="comments"
+        :articleId="article.id"
+        @fetchComments="fetchComments"
+        ref="comment"
+      ></comments>
     </div>
   </div>
 </template>
@@ -39,14 +45,16 @@
 .main {
   background: #f5f5f5;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .article {
-  margin: 16px 0;
+  border-radius: 4px;
+  margin-bottom: 60px;
+  margin-top: 16px;
   flex-flow: column;
   background: white;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
   width: 900px;
   display: flex;
   padding: 10px;
@@ -73,6 +81,9 @@
       display: flex;
     }
   }
+  &_body {
+    // margin-bottom: 200px;
+  }
   &_author_avatar {
     width: 37px;
     height: 37px;
@@ -84,12 +95,15 @@
 <script>
 import HeadBar from "../header.vue";
 import articleService from "../../service/articleService";
-import markdownEditor from "../markdown/markdownEditor.vue";
+import MarkdownEditor from "../markdown/markdownEditor.vue";
+import commentService from "../../service/commentService";
+import Comments from "./comments.vue";
 export default {
   name: "articleDetailMain",
   components: {
     HeadBar,
-    markdownEditor,
+    MarkdownEditor,
+    Comments,
   },
   data() {
     return {
@@ -99,9 +113,9 @@ export default {
         commentCounts: 0,
         viewCounts: 0,
         summary: "",
-        author: {},
+        author: '',
         tags: [],
-        category: {},
+        category: '',
         createDate: "",
         editor: {
           value: "",
@@ -113,14 +127,11 @@ export default {
         },
       },
       comments: [],
-      comment: {
-        article: {},
-        content: "",
-      },
     };
   },
   created() {
     this.fetchDetail();
+    this.fetchComments();
   },
   methods: {
     async fetchDetail() {
@@ -132,6 +143,38 @@ export default {
       } catch (error) {
         this.$message.error(error);
       }
+    },
+    async fetchComments() {
+      try {
+        const url = `comments/article/${this.$route.params.id}`;
+        const { data } = await commentService.get(url);
+        this.comments = data;
+        this.AddVisables();
+      } catch (err) {
+        this.$message({
+          type: "error",
+          message: err,
+        });
+      }
+    },
+    AddVisables() {
+      console.log(33, this.comments);
+      if (!this.comments.length > 0) {
+        return;
+      }
+      this.comments.forEach((comment) => {
+        // 回复一级评论输入框和文本
+        comment.parentVisble = false;
+        // comment.textParent = "";
+        if (comment.childrens.length > 0) {
+          comment.childrens.forEach((children) => {
+            // 回复二级评论输入框和文本
+            children.childVisble = false;
+            // children.textChild = "";
+          });
+        }
+      });
+      console.log(44, this.comments);
     },
   },
 };

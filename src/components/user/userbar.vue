@@ -102,7 +102,6 @@ export default {
   },
   computed: {
     user() {
-      console.log("user111", this.$store);
       let isLogin = this.$store.state.account.length != 0;
       let name = this.$store.state.name;
       return { isLogin, name };

@@ -28,7 +28,6 @@ const actions = {
       getUserInfo(state.token)
         .then((data) => {
           if (data.success) {
-            console.log(data);
             commit(types.SET_ACCOUNT, data.data.account);
             commit(types.SET_NAME, data.data.nickname);
             commit(types.SET_AVATAR, data.data.avatar);

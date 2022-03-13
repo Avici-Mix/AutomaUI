@@ -19,7 +19,7 @@ const router = new VueRouter({
     },
     {
       path: "/view/:id",
-      component: () => import("../components/articleDetail/main.vue"),
+      component: () => import("../components/articleDetail/articleDetail.vue"),
       name: "view",
     }
   ],
