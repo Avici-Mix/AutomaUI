@@ -14,8 +14,6 @@
 
 <style lang="scss" scoped>
 .user {
-  margin-right: 30px;
-  margin-left: auto;
   display: flex;
   align-items: center;
   justify-items: center;
@@ -76,7 +74,7 @@ export default {
       that
         .$confirm($t('logoutConfirm'), $t('tip'), {
           confirmButtonText: $t('comfirm'),
-          cancelButtonText: $t('cancle'),
+          cancelButtonText: $t('cancel'),
           type: "warning",
         })
         .then(() => {
@@ -116,13 +114,13 @@ zh:
   tip: "提示"
   logoutConfirm: "是否退出登录?"
   comfirm: 确认
-  cancle: 取消
+  cancel: 取消
   logoutSuccess: "已退出登录"
 en:
   login: "login"
   tip: "tip"
   logoutConfirm: "Log Out or Not?"
   comfirm: comfirm
-  cancle: cancel
+  cancel: cancel
   logoutSuccess: "Logged out!"
 </i18n>

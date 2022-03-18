@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import store from "@/store";
 
 import { getToken } from "@/request/token";
+import { Message } from "element-ui";
 
 import Main from "../components/Main.vue";
 
@@ -21,13 +22,18 @@ const router = new VueRouter({
       path: "/view/:id",
       component: () => import("../components/articleDetail/articleDetail.vue"),
       name: "view",
-    }
+    },
+    {
+      path: "/publish",
+      component: () =>
+        import("../components/articlePublish/articlePublish.vue"),
+      name: "publish",
+    },
   ],
 });
 
-const that = this;
 router.beforeEach((to, from, next) => {
-  if(getToken){
+  if (getToken) {
     if (store.state.account.length === 0) {
       store
         .dispatch("getUserInfo")
@@ -36,15 +42,10 @@ router.beforeEach((to, from, next) => {
           next();
         })
         .catch(() => {
-          that.$message({
-            type: "warning",
-            showClose: true,
-            message: "登录已过期",
-          });
           next({ path: "/" });
         });
     } else {
-  }
+    }
     next();
   }
 });

@@ -135,7 +135,7 @@ export default {
           this.articleList = data;
         }
       } catch (err) {
-        this.$message.error(err);
+        // this.$message.error(err);
       }
     },
   },

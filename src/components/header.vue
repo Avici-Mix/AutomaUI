@@ -2,12 +2,21 @@
   <div class="headerBar">
     <img class="icon" src="../images/robotIcon.png" @click="backHome" />
     <div class="text" @click="backHome">Aumto</div>
-    <el-menu :default-active="defaultIndex" mode="horizontal">
+    <el-menu  :default-active="defaultIndex" mode="horizontal">
       <el-menu-item index="HomePage">{{ $t("homePage") }}</el-menu-item>
       <el-menu-item index="QuestionPage">{{ $t("QuestionPage") }}</el-menu-item>
       <el-menu-item index="InfoPage">{{ $t("InfoPage") }}</el-menu-item>
     </el-menu>
-    <user-bar></user-bar>
+    <div class="headerBar_right">
+      <div
+        class="writeArticle"
+        v-if="user.isLogin && isPublish"
+        @click="toPublish"
+      >
+        {{ $t("writeArticle") }}
+      </div>
+      <user-bar></user-bar>
+    </div>
   </div>
 </template>
 
@@ -19,16 +28,32 @@ export default {
   components: {
     userBar,
   },
+  props: {
+    isPublish: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       defaultIndex: "HomePage",
       activeIndex2: "1",
     };
   },
+  computed: {
+    user() {
+      let isLogin = this.$store.state.account.length != 0;
+      return { isLogin };
+    },
+  },
   methods: {
     backHome() {
       this.$router.push({ path: `/` });
     },
+    toPublish() {
+      this.$router.push({ path: `/publish` });
+    },
+  
   },
 };
 </script>
@@ -36,9 +61,30 @@ export default {
 <style lang="scss" scoped>
 .headerBar {
   display: flex;
-  flex-direction: row;
   height: 60px;
   background: white;
+  &_right {
+    cursor: pointer;
+    display: flex;
+    margin-right: 30px;
+    margin-left: auto;
+  }
+  .operate {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    margin-right: 27px;
+  }
+  .writeArticle {
+    font-size: 15px;
+    background-color: #1e80ff;
+    color: #fff;
+    display: flex;
+    align-self: center;
+    padding: 7px 11px;
+    border-radius: 3px;
+    margin-right: 27px;
+  }
   .text {
     cursor: pointer;
     display: flex;
@@ -66,8 +112,10 @@ zh:
   homePage: "首页"
   QuestionPage: "问答"
   InfoPage: "资讯"
+  writeArticle: "写文章"
 en:
   homePage: "Home"
   QuestionPage: "Q&A"
   InfoPage: "information"
+  writeArticle: "Write Articles"
 </i18n>

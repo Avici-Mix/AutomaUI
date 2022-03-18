@@ -14,6 +14,8 @@ service.interceptors.request.use(
   (config) => {
     if (store.state.token) {
       config.headers["Authorization"] = getToken();
+    }else{
+      config.headers["Authorization"] = "";
     }
     return config;
   },

@@ -78,7 +78,7 @@
             <el-button
               class="comment_write_button"
               @click="cancleParentReply(index)"
-              >{{ $t("cancle") }}</el-button
+              >{{ $t("cancel") }}</el-button
             >
           </div>
         </div>
@@ -145,7 +145,7 @@
                   <el-button
                     class="comment_write_button"
                     @click="cancleParentReply(index)"
-                    >{{ $t("cancle") }}</el-button
+                    >{{ $t("cancel") }}</el-button
                   >
                 </div>
               </div>
@@ -451,7 +451,7 @@ zh:
  commentNoNull: 评论内容不能为空
  reply: 回复
  placeholderReply: 请输入回复内容
- cancle: 取消
+ cancel: 取消
  commentSuccess: 评论成功！
 en:
  allComment: All comments   
@@ -460,6 +460,6 @@ en:
  commentNoNull: Comments cannot be empty
  reply: reply
  placeholderReply: Please enter your reply
- cancle: cancle
+ cancel: cancel
  commentSuccess: Comment successful!
 </i18n>
