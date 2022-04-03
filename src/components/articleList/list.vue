@@ -3,7 +3,7 @@
     <div
       class="article"
       v-for="article in articleList"
-      v-bind:key="article.title"
+      v-bind:key="article.id"
       @click="toDetail(article.id)"
     >
       <div class="article_head">
@@ -34,6 +34,18 @@
       </div>
       <div></div>
     </div>
+    <div class="pagination">
+      <el-pagination
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        :current-page.sync="currentPage"
+        :page-size="10"
+        layout="prev, pager, next, jumper"
+        :total="pageTotal"
+        hide-on-single-page="true"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -42,8 +54,6 @@
   cursor: pointer;
   background: white;
   padding: 10px 20px;
-  width: 700px;
-  margin-bottom: 17px;
   box-shadow: 5px 5px 5px rgb(238, 229, 229);
   &_head {
     display: flex;
@@ -79,6 +89,9 @@
     display: flex;
     align-items: center;
     color: #4e5969;
+    padding-bottom: 17px;
+    border-bottom: 1px solid #dbdbdb;
+
     .viewCounts {
       margin-right: 5px;
     }
@@ -107,6 +120,13 @@
     }
   }
 }
+
+.pagination >>> .el-pagination {
+  padding: 15px 7px;
+  background: white;
+  display: flex;
+  justify-content: center;
+}
 </style>
 
 <script>
@@ -115,27 +135,45 @@ export default {
   data() {
     return {
       articleList: [],
+      pageTotal: 0,
+      currentPage: 1,
+      pageSize: 10,
+      categoryId: "",
     };
   },
-  created() {
-    this.getArticleList();
-  },
+
   methods: {
     toDetail(id) {
       this.$router.push({ path: `/view/${id}` });
     },
-    async getArticleList() {
+    prevClick() {
+      this.getArticleList("",this.currentPage-1);
+    },
+    nextClick() {
+      this.getArticleList("",this.currentPage+1);
+    },
+
+    async getArticleList(id,page) {
+      let categoryId = "";
+      if (id) {
+        this.categoryId = id;
+        categoryId = id;
+      } else {
+        categoryId = this.categoryId;
+      }
       const params = {
-        page: 1,
-        pageSize: 10,
+        page: page,
+        pageSize: this.pageSize,
+        categoryId: categoryId,
       };
       try {
         const { data } = await ArticleService.post("", params);
         if (data) {
-          this.articleList = data;
+          this.articleList = data.articleList;
+          this.pageTotal = data.length;
         }
       } catch (err) {
-        // this.$message.error(err);
+        this.$message.error(err);
       }
     },
   },

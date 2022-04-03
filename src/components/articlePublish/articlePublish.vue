@@ -56,7 +56,8 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="$t('articleLabel')" prop="tags">
+          <el-form-item :label="$t('articleLabel')" prop="tags"
+            >·
             <el-checkbox-group v-model="articleForm.tags" class="checkbox">
               <el-checkbox
                 v-for="tag in tags"
@@ -158,14 +159,17 @@ import MarkdownEditor from "../markdown/markdownEditor.vue";
 import headerBar from "../header.vue";
 import categoryService from "../../service/categoryService";
 import tagService from "../../service/tagService";
-import articleService from "../../service/articleService"
+import articleService from "../../service/articleService";
 export default {
   components: { headerBar, MarkdownEditor, UserBar },
   name: "ArticlePublish",
-  created() {},
+  created() {
+    this.fetchArticle();
+  },
   data() {
     const $t = this.$t.bind(this);
     return {
+      editArticleId: "",
       publishVisible: false,
       categorys: [],
       tags: [],
@@ -229,6 +233,20 @@ export default {
     };
   },
   methods: {
+    async fetchArticle() {
+      try {
+        this.editArticleId = this.$route.params.articleId;
+        const url = `article/view/${this.editArticleId}`;
+        const { data } = await articleService.post(url);
+        this.articleForm.id = data.id;
+        this.articleForm.title = data.title;
+        this.articleForm.summary = data.summary;
+        this.category = data.category;
+        this.tags = data.tags;
+        this.articleForm.editor.value = data.body.content;
+        this.articleForm.editor.ref.d_render = data.body.contentHtml;
+      } catch (error) {}
+    },
     async publishArticle() {
       const $t = this.$t.bind(this);
       const that = this;
@@ -237,13 +255,13 @@ export default {
       });
       const tags = [];
 
-      this.tags.forEach(item=>{
-          that.articleForm.tags.forEach(tag =>{
-              if(tag==item.id){
-                  tags.push(item);
-              }
-          })
-      })
+      this.tags.forEach((item) => {
+        that.articleForm.tags.forEach((tag) => {
+          if (tag == item.id) {
+            tags.push(item);
+          }
+        });
+      });
       const params = {
         id: this.articleForm.id,
         title: this.articleForm.title,
@@ -259,12 +277,14 @@ export default {
       const url = "/article/publish";
 
       try {
-          const {data} = await articleService.post(url,params);
-          this.$message.success($t('publishSuccess'))
-          this.$router.push({ path: `/view/${data.id}` });
-      } catch (err) {
+        const { data } = await articleService.post(url, params);
+        this.$message.success($t("publishSuccess"));
+
+        setTimeout(() => {
           
-      }
+          this.$router.push({ path: `/view/${data.id}` });
+        }, 100);
+      } catch (err) {}
     },
     async fetchCategory() {
       try {

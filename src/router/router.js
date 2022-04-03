@@ -42,7 +42,7 @@ router.beforeEach((to, from, next) => {
           next();
         })
         .catch(() => {
-          next({ path: "/" });
+          // next({ path: "/" });
         });
     } else {
     }

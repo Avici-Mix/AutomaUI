@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <list></list>
+    <list ref="list" style="width:750px;"></list>
     <article-sider></article-sider>
   </div>
 </template>
@@ -20,5 +20,13 @@ export default {
     List,
     articleSider,
   },
+  methods:{
+    fetchArticleByCategory(id){
+      const {list} = this.$refs;
+      if(list){
+        list.getArticleList(id);
+      }
+    }
+  }
 };
 </script>

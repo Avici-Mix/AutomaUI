@@ -23,6 +23,20 @@
               <div>{{ $t("read") }} {{ article.viewCounts }}</div>
             </div>
           </div>
+
+          <div
+            class="article_edit"
+            v-if="article.author"
+            v-show="user.name == article.author"
+          >
+            <el-button
+              size="mini"
+              type="primary"
+              icon="el-icon-edit"
+              @click="toEdit"
+              >{{ $t("edit") }}</el-button
+            >
+          </div>
         </div>
         <div class="article_body">
           <markdown-editor
@@ -58,6 +72,12 @@
   width: 900px;
   display: flex;
   padding: 10px;
+  &_edit {
+    margin-right: 20px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
   &_title {
     margin-left: 20px;
     font-size: 34px;
@@ -113,9 +133,9 @@ export default {
         commentCounts: 0,
         viewCounts: 0,
         summary: "",
-        author: '',
+        author: "",
         tags: [],
-        category: '',
+        category: "",
         createDate: "",
         editor: {
           value: "",
@@ -133,7 +153,23 @@ export default {
     this.fetchDetail();
     this.fetchComments();
   },
+  computed: {
+    user() {
+      let name = this.$store.state.name;
+      return { name };
+    },
+  },
   methods: {
+    toEdit() {
+      const that =this;
+      console.log("that.article.id",that.article.id);
+      this.$router.push({
+        name: "publish",
+        params: {
+          articleId: that.article.id,
+        },
+      });
+    },
     async fetchDetail() {
       try {
         const url = `article/view/${this.$route.params.id}`;
@@ -158,23 +194,20 @@ export default {
       }
     },
     AddVisables() {
-      console.log(33, this.comments);
-      if (!this.comments.length > 0) {
-        return;
+      if (this.comments.length > 0) {
+        this.comments.forEach((comment) => {
+          // 回复一级评论输入框和文本
+          comment.parentVisble = false;
+          // comment.textParent = "";
+          if (comment.childrens.length > 0) {
+            comment.childrens.forEach((children) => {
+              // 回复二级评论输入框和文本
+              children.childVisble = false;
+              // children.textChild = "";
+            });
+          }
+        });
       }
-      this.comments.forEach((comment) => {
-        // 回复一级评论输入框和文本
-        comment.parentVisble = false;
-        // comment.textParent = "";
-        if (comment.childrens.length > 0) {
-          comment.childrens.forEach((children) => {
-            // 回复二级评论输入框和文本
-            children.childVisble = false;
-            // children.textChild = "";
-          });
-        }
-      });
-      console.log(44, this.comments);
     },
   },
 };
@@ -183,6 +216,8 @@ export default {
 <i18n>
 zh:
  read: 阅读
+ edit: 编辑
 en:
  read: read
+ edit: 编辑
 </i18n>

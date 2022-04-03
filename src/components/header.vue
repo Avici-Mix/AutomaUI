@@ -2,10 +2,17 @@
   <div class="headerBar">
     <img class="icon" src="../images/robotIcon.png" @click="backHome" />
     <div class="text" @click="backHome">Aumto</div>
-    <el-menu  :default-active="defaultIndex" mode="horizontal">
-      <el-menu-item index="HomePage">{{ $t("homePage") }}</el-menu-item>
-      <el-menu-item index="QuestionPage">{{ $t("QuestionPage") }}</el-menu-item>
-      <el-menu-item index="InfoPage">{{ $t("InfoPage") }}</el-menu-item>
+    <el-menu
+      :default-active="defaultIndex"
+      mode="horizontal"
+      @select="handleSelect"
+    >
+      <el-menu-item
+        :index="category.id"
+        v-for="category in categoryArr"
+        v-bind:key="category.id"
+        >{{ category.categoryName }}</el-menu-item
+      >
     </el-menu>
     <div class="headerBar_right">
       <div
@@ -22,6 +29,7 @@
 
 <script>
 import userBar from "./user/userbar.vue";
+import CategoryService from "../service/categoryService";
 
 export default {
   name: "headBar",
@@ -36,8 +44,9 @@ export default {
   },
   data() {
     return {
-      defaultIndex: "HomePage",
+      defaultIndex: "",
       activeIndex2: "1",
+      categoryArr: [],
     };
   },
   computed: {
@@ -46,6 +55,9 @@ export default {
       return { isLogin };
     },
   },
+  created() {
+    this.getCategory();
+  },
   methods: {
     backHome() {
       this.$router.push({ path: `/` });
@@ -53,7 +65,19 @@ export default {
     toPublish() {
       this.$router.push({ path: `/publish` });
     },
-  
+    handleSelect(key, keyPath) {
+      this.$emit("fetchCategory", key);
+    },
+    async getCategory() {
+      try {
+        const { data } = await CategoryService.get();
+        this.categoryArr = data;
+        this.defaultIndex = this.categoryArr[0].id;
+        this.$emit("fetchCategory", this.defaultIndex);
+      } catch (err) {
+        this.$messge.error(err);
+      }
+    },
   },
 };
 </script>

@@ -2,10 +2,10 @@
   <div class="main">
     <el-container>
       <el-header class="header">
-        <header-bar></header-bar>
+        <header-bar @fetchCategory="fetchByCategory($event)"></header-bar>
       </el-header>
       <el-main>
-        <body-content></body-content>
+        <body-content ref="body"></body-content>
       </el-main>
     </el-container>
   </div>
@@ -20,6 +20,14 @@ export default {
     HeaderBar,
     BodyContent,
   },
+  methods:{
+    fetchByCategory(id){
+      const {body} = this.$refs;
+      if(body){
+        body.fetchArticleByCategory(id);
+      }
+    }
+  }
 };
 </script>
 
