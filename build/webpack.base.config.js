@@ -1,6 +1,7 @@
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
+const EncodingPlugin = require('webpack-encoding-plugin');
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -10,14 +11,7 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "dist"),
-  },
-  devServer: {
-    static: path.resolve(__dirname, "dist"),
-    open: true,
-    port: 8880,
-    hot: true,
-    historyApiFallback: true,
+    path: path.resolve(__dirname, "../dist"),
   },
   resolve: {
     extensions: [".js", ".vue", ".json"],
@@ -25,7 +19,6 @@ module.exports = {
       "@": resolve("src"),
     },
   },
-  mode: "development",
   module: {
     rules: [
       {
@@ -72,5 +65,8 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: path.resolve(__dirname, "../src/index.html"),
     }),
+    new EncodingPlugin({
+        encoding: 'UTF-8'
+    })
   ],
 };
