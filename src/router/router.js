@@ -11,6 +11,7 @@ import Main from "../components/Main.vue";
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+
   routes: [
     { path: "/", component: Main, name: "main" },
     {

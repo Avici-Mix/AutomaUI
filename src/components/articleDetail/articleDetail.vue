@@ -10,7 +10,7 @@
           <div class="article_info_left">
             <img
               class="article_author_avatar"
-              src="../../images/default_avatar.jpg"
+              :src="article.authorAvatar"
               alt=""
             />
           </div>
@@ -123,7 +123,7 @@ export default {
   components: {
     HeadBar,
     MarkdownEditor,
-    Comments,
+    Comments
   },
   data() {
     return {
@@ -134,6 +134,7 @@ export default {
         viewCounts: 0,
         summary: "",
         author: "",
+        authorAvatar: "",
         tags: [],
         category: "",
         createDate: "",
@@ -143,10 +144,10 @@ export default {
           subfield: false,
           defaultOpen: "preview",
           previewBackground: "#fff",
-          boxShadowStyle: "none",
-        },
+          boxShadowStyle: "none"
+        }
       },
-      comments: [],
+      comments: []
     };
   },
   created() {
@@ -156,18 +157,24 @@ export default {
   computed: {
     user() {
       let name = this.$store.state.name;
-      return { name };
-    },
+      let avatar = "";
+      if (this.$store.state.avatar) {
+        avatar = this.$store.state.avatar;
+      } else {
+        avatar = require("../../images/default_avatar.jpg");
+      }
+      return { name, avatar };
+    }
   },
   methods: {
     toEdit() {
-      const that =this;
-      console.log("that.article.id",that.article.id);
+      const that = this;
+      console.log("that.article.id", that.article.id);
       this.$router.push({
         name: "publish",
         params: {
-          articleId: that.article.id,
-        },
+          articleId: that.article.id
+        }
       });
     },
     async fetchDetail() {
@@ -189,18 +196,18 @@ export default {
       } catch (err) {
         this.$message({
           type: "error",
-          message: err,
+          message: err
         });
       }
     },
     AddVisables() {
       if (this.comments.length > 0) {
-        this.comments.forEach((comment) => {
+        this.comments.forEach(comment => {
           // 回复一级评论输入框和文本
           comment.parentVisble = false;
           // comment.textParent = "";
           if (comment.childrens.length > 0) {
-            comment.childrens.forEach((children) => {
+            comment.childrens.forEach(children => {
               // 回复二级评论输入框和文本
               children.childVisble = false;
               // children.textChild = "";
@@ -208,8 +215,8 @@ export default {
           }
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

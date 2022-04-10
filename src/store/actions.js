@@ -89,7 +89,7 @@ const actions = {
 
   register({ commit }, user) {
     return new Promise((resolve, reject) => {
-      register(user.account, user.nickname, user.password)
+      register(user.account, user.nickname, user.password,user.avatar)
         .then((data) => {
           if (data.success) {
             commit(types.SET_TOKEN, data.data);

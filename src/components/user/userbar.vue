@@ -6,7 +6,7 @@
       <user-bar ref="login"></user-bar>
     </div>
     <div class="user_info" v-if="user.isLogin" @click="logout">
-      <img src="../../images/default_avatar.jpg" />
+      <img :src="user.avatar" />
       <div class="user_info_name">{{ user.name }}</div>
     </div>
   </div>
@@ -102,7 +102,13 @@ export default {
     user() {
       let isLogin = this.$store.state.account.length != 0;
       let name = this.$store.state.name;
-      return { isLogin, name };
+      let avatar = '';
+      if(this.$store.state.avatar){
+         avatar = this.$store.state.avatar;
+      }else{
+        avatar = require("../../images/default_avatar.jpg")
+      }
+      return { isLogin, name,avatar };
     },
   },
 };

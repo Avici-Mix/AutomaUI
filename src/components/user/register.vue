@@ -1,11 +1,28 @@
 <template>
   <el-dialog
+    class="register"
     :title="$t('title')"
     :visible.sync="visible"
     width="40%"
     :close-on-click-modal="false"
     append-to-body
   >
+    <el-upload
+      class="avatar-uploader"
+      action=""
+      :http-request="upload"
+      :headers="headerObj"
+      :show-file-list="false"
+      :before-upload="beforeAvatarUpload"
+    >
+      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+      <img
+        v-else
+        class="avatar-default"
+        src="../../images/default_avatar.jpg"
+      />
+      <div class="tip">{{ $t("upload") }}</div>
+    </el-upload>
     <el-form
       :rules="rules"
       class="form"
@@ -40,18 +57,23 @@
 </template>
 
 <script>
+import { upload } from "../../service/upload.js";
 export default {
   name: "register",
   data() {
     const $t = this.$t.bind(this);
     return {
+      headerObj: {
+        "Content-Type": "multipart/form-data"
+      },
+      imageUrl: "",
       visible: false,
       form: {
         nickname: "",
         email: "",
         password: "",
         passwordConfirm: "",
-        account: "",
+        account: ""
       },
       rules: {
         account: [
@@ -60,8 +82,8 @@ export default {
             min: 1,
             max: 18,
             message: $t("rules.nameLength"),
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         nickname: [
           { required: true, message: $t("rules.noEmpty") },
@@ -69,38 +91,60 @@ export default {
             min: 1,
             max: 18,
             message: $t("rules.nameLength"),
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         email: [
           { required: true, message: $t("rules.noEmpty"), trigger: "blur" },
           {
             type: "email",
             message: $t("rules.correctEmail"),
-            trigger: ["blur", "change"],
-          },
+            trigger: ["blur", "change"]
+          }
         ],
         password: [
           {
             required: true,
             message: $t("rules.noEmpty"),
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         passwordConfirm: [
           {
             required: true,
             message: $t("rules.noEmpty"),
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   computed: {},
   methods: {
+    upload(e) {
+      let that = this;
+      let formdata = new FormData();
+      formdata.append("image", e.file);
+
+      upload(formdata)
+        .then(res => {
+          if (res.success) {
+            that.imageUrl = res.data;
+          }
+        })
+        .catch(err => {
+          that.$message({ message: err, type: "error", showClose: true });
+        });
+    },
+    beforeAvatarUpload(file) {
+      const isLt5M = file.size / 1024 / 1024 < 5;
+      if (!isLt5M) {
+        this.$message.error("上传头像图片大小不能超过 5MB!");
+      }
+      return isLt5M;
+    },
     submitForm(form) {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(valid => {
         if (valid) {
           this.handleRegister(form);
         } else {
@@ -120,6 +164,7 @@ export default {
         nickname: form.nickname,
         password: form.password,
         account: form.account,
+        avatar: that.imageUrl
       };
       try {
         that.$store
@@ -128,7 +173,7 @@ export default {
             that.$message({
               message: $t("registerSuccess"),
               type: "success",
-              showClose: true,
+              showClose: true
             });
             that.$store
               .dispatch("getUserInfo")
@@ -137,13 +182,13 @@ export default {
                 that.$message({
                   type: "warning",
                   showClose: true,
-                  message: $t("LoginDate"),
+                  message: $t("LoginDate")
                 });
               });
             that.visible = false;
             that.$emit("closeLogin");
           })
-          .catch((error) => {
+          .catch(error => {
             if (error !== "error") {
               that.$message({ message: error, type: "error", showClose: true });
             }
@@ -151,14 +196,35 @@ export default {
       } catch (error) {
         this.$message.error(error);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .form {
   font-size: 16px;
+}
+
+.register >>> .el-dialog__body {
+  padding: 0 20px;
+}
+
+.avatar-uploader {
+  text-align: center;
+  .tip {
+    font-size: 12px;
+    margin-bottom: 14px;
+    margin-top: 10px;
+    color: #979595;
+  }
+}
+.avatar,
+.avatar-default {
+  cursor: pointer;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
 }
 </style>
 
@@ -179,6 +245,7 @@ zh:
     passwordDiff: 两次输入的密码不一致
   registerSuccess: 注册成功！
   LoginDate: 登录已过期
+  upload: 点击上传头像
 en:
   title: User Registration 
   nickname: nickname
@@ -195,4 +262,5 @@ en:
     correctEmail: Please enter the correct email address
     passwordDiff: Entered passwords differ
   registerSuccess: registered successfully!
+  upload: Click Upload profile picture
 </i18n>

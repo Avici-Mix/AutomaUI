@@ -9,7 +9,7 @@
       <div class="article_head">
         <div class="title">{{ article.title }}</div>
         <div class="author">
-          <img class="img" src="../../images/default_avatar.jpg" />
+          <img class="img" :src="article.authorAvatar" />
           <div class="name">{{ article.author }}</div>
         </div>
       </div>
