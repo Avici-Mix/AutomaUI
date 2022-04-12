@@ -1,8 +1,8 @@
 <template>
   <div>
     <head-bar></head-bar>
-    <div class="main">
-      <div class="article" v-if="article">
+    <div class="main" v-loading="loading">
+      <div class="article" v-show="article.id">
         <div class="article_title" v-if="article.title">
           {{ article.title }}
         </div>
@@ -46,6 +46,7 @@
         </div>
       </div>
       <comments
+        v-show="article.id"
         :comments="comments"
         :articleId="article.id"
         @fetchComments="fetchComments"
@@ -127,6 +128,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       article: {
         id: "",
         title: "",
@@ -149,6 +151,9 @@ export default {
       },
       comments: []
     };
+  },
+  destroyed() {
+    this.article = "";
   },
   created() {
     this.fetchDetail();
@@ -178,6 +183,7 @@ export default {
       });
     },
     async fetchDetail() {
+      this.loading = true;
       try {
         const url = `article/view/${this.$route.params.id}`;
         const { data } = await articleService.post(url);
@@ -186,6 +192,7 @@ export default {
       } catch (error) {
         this.$message.error(error);
       }
+      this.loading = false;
     },
     async fetchComments() {
       try {

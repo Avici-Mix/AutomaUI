@@ -283,7 +283,7 @@ export default {
         setTimeout(() => {
           
           this.$router.push({ path: `/view/${data.id}` });
-        }, 100);
+        }, 500);
       } catch (err) {}
     },
     async fetchCategory() {

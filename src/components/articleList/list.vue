@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div
       class="article"
       v-for="article in articleList"
@@ -134,11 +134,12 @@ import ArticleService from "../../service/articleService";
 export default {
   data() {
     return {
+      loading: false,
       articleList: [],
       pageTotal: 0,
       currentPage: 1,
       pageSize: 10,
-      categoryId: "",
+      categoryId: ""
     };
   },
 
@@ -147,13 +148,14 @@ export default {
       this.$router.push({ path: `/view/${id}` });
     },
     prevClick() {
-      this.getArticleList("",this.currentPage-1);
+      this.getArticleList("", this.currentPage - 1);
     },
     nextClick() {
-      this.getArticleList("",this.currentPage+1);
+      this.getArticleList("", this.currentPage + 1);
     },
 
-    async getArticleList(id,page) {
+    async getArticleList(id, page) {
+      this.loading = true;
       let categoryId = "";
       if (id) {
         this.categoryId = id;
@@ -164,7 +166,7 @@ export default {
       const params = {
         page: page,
         pageSize: this.pageSize,
-        categoryId: categoryId,
+        categoryId: categoryId
       };
       try {
         const { data } = await ArticleService.post("", params);
@@ -175,7 +177,8 @@ export default {
       } catch (err) {
         this.$message.error(err);
       }
-    },
-  },
+      this.loading = false;
+    }
+  }
 };
 </script>
