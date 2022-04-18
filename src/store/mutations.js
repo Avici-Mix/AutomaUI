@@ -1,4 +1,5 @@
 import * as types from "./mutation-types";
+import state from "./state";
 
 const mutations = {
   [types.SET_ACCOUNT]: (state, account) => {
@@ -15,6 +16,15 @@ const mutations = {
   },
   [types.SET_ID]: (state, id) => {
     state.id = id;
+  },
+  [types.SET_CASH_CATEGORYID]:(state,categoryId)=>{
+    state.cash.categoryId = categoryId;
+  },
+  [types.SET_CASH_CURRENTPAGE]:(state,currentPage)=>{
+    state.cash.currentPage = currentPage;
+  },
+  [types.SET_VIEWCOUNTARR]:(state,arr)=>{
+    state.viewCountArr = arr;
   },
 };
 

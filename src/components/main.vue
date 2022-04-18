@@ -7,6 +7,9 @@
       <el-main>
         <body-content ref="body"></body-content>
       </el-main>
+      <el-footer class="foot">
+        <a target="_blank" href="https://beian.miit.gov.cn"><i class="auto-icon-beian"></i>粤ICP备2022036249号</a>
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -41,6 +44,15 @@ export default {
     .main  {
       background-color: #f5f5f5;
     }
+  }
+}
+.foot{
+  display: flex;
+  justify-content: center;
+  font-size: 13px;
+  margin-top: 15px;
+  & > a {
+    color: #756c6c;
   }
 }
 </style>

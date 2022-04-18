@@ -279,11 +279,7 @@ export default {
       try {
         const { data } = await articleService.post(url, params);
         this.$message.success($t("publishSuccess"));
-
-        setTimeout(() => {
-          
-          this.$router.push({ path: `/view/${data.id}` });
-        }, 500);
+        this.$router.push({ path: `/view/${data.id}` });
       } catch (err) {}
     },
     async fetchCategory() {

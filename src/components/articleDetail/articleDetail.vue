@@ -1,8 +1,8 @@
 <template>
   <div>
     <head-bar></head-bar>
-    <div class="main" v-loading="loading">
-      <div class="article" v-show="article.id">
+    <div class="main">
+      <div class="article" v-show="article.id" v-loading="loading">
         <div class="article_title" v-if="article.title">
           {{ article.title }}
         </div>
@@ -20,7 +20,7 @@
               <div class="article_createTime">
                 {{ article.createDate | format }}
               </div>
-              <div>{{ $t("read") }} {{ article.viewCounts }}</div>
+              <div>{{ $t("read") }} {{ viewCount }}</div>
             </div>
           </div>
 
@@ -119,6 +119,7 @@ import articleService from "../../service/articleService";
 import MarkdownEditor from "../markdown/markdownEditor.vue";
 import commentService from "../../service/commentService";
 import Comments from "./comments.vue";
+import {mapGetters} from "vuex";
 export default {
   name: "articleDetailMain",
   components: {
@@ -129,11 +130,11 @@ export default {
   data() {
     return {
       loading: false,
+      viewCount: 0,
       article: {
         id: "",
         title: "",
         commentCounts: 0,
-        viewCounts: 0,
         summary: "",
         author: "",
         authorAvatar: "",
@@ -158,6 +159,7 @@ export default {
   created() {
     this.fetchDetail();
     this.fetchComments();
+    this.handlerViewCount();
   },
   computed: {
     user() {
@@ -169,9 +171,18 @@ export default {
         avatar = require("../../images/default_avatar.jpg");
       }
       return { name, avatar };
-    }
+    },
+    ...mapGetters(['cash','viewCountArr'])
   },
   methods: {
+    handlerViewCount(){
+      this.viewCountArr.forEach(ele=>{
+        if(ele.id == this.$route.params.id){
+          this.viewCount = ele.viewCount;
+          return;
+        }
+      })
+    },
     toEdit() {
       const that = this;
       console.log("that.article.id", that.article.id);
@@ -185,8 +196,14 @@ export default {
     async fetchDetail() {
       this.loading = true;
       try {
+        const params = {
+          categoryId: this.cash.categoryId,
+          page: this.cash.currentPage,
+          pageSize: 10,
+        };
+        console.log("param  ---------",params);
         const url = `article/view/${this.$route.params.id}`;
-        const { data } = await articleService.post(url);
+        const { data } = await articleService.post(url, params);
         Object.assign(this.article, data);
         this.article.editor.value = data.body.content;
       } catch (error) {

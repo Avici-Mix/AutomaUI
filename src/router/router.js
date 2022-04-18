@@ -17,20 +17,20 @@ const router = new VueRouter({
     {
       path: "/register",
       component: () => import("../components/user/register.vue"),
-      name: "register",
+      name: "register"
     },
     {
       path: "/view/:id",
       component: () => import("../components/articleDetail/articleDetail.vue"),
-      name: "view",
+      name: "view"
     },
     {
       path: "/publish",
       component: () =>
         import("../components/articlePublish/articlePublish.vue"),
-      name: "publish",
-    },
-  ],
+      name: "publish"
+    }
+  ]
 });
 
 router.beforeEach((to, from, next) => {
@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.account.length === 0) {
       store
         .dispatch("getUserInfo")
-        .then((data) => {
+        .then(data => {
           //获取用户信息
           next();
         })

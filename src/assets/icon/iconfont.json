@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "2569555",
+      "name": "备案",
+      "font_class": "beian",
+      "unicode": "e6d6",
+      "unicode_decimal": 59094
+    },
+    {
       "icon_id": "8776631",
       "name": "view",
       "font_class": "icon-view",

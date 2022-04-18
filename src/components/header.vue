@@ -30,6 +30,7 @@
 <script>
 import userBar from "./user/userbar.vue";
 import CategoryService from "../service/categoryService";
+import {mapMutations} from "vuex"
 
 export default {
   name: "headBar",
@@ -67,6 +68,7 @@ export default {
     },
     handleSelect(key, keyPath) {
       this.$emit("fetchCategory", key);
+      this.setCategoryId(key);
     },
     async getCategory() {
       try {
@@ -74,10 +76,14 @@ export default {
         this.categoryArr = data;
         this.defaultIndex = this.categoryArr[0].id;
         this.$emit("fetchCategory", this.defaultIndex);
+        this.setCategoryId(this.defaultIndex);
       } catch (err) {
         this.$messge.error(err);
       }
     },
+    ...mapMutations({
+      setCategoryId:'SET_CASH_CATEGORYID'
+    })
   },
 };
 </script>

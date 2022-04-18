@@ -21,9 +21,9 @@
           <i class="auto-icon-view"></i>
           <span>{{ article.viewCounts }}</span>
         </div>
-        <div class="likeCounts">
+        <!-- <div class="likeCounts">
           <i class="auto-icon-like"></i><span>{{ article.likeCounts }}</span>
-        </div>
+        </div> -->
         <div class="commentCounts">
           <i class="auto-icon-comment"></i
           ><span>{{ article.commentCounts }}</span>
@@ -36,13 +36,12 @@
     </div>
     <div class="pagination">
       <el-pagination
-        @prev-click="prevClick"
-        @next-click="nextClick"
+        @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
         :page-size="10"
         layout="prev, pager, next, jumper"
         :total="pageTotal"
-        hide-on-single-page="true"
+        :hide-on-single-page="true"
       >
       </el-pagination>
     </div>
@@ -131,6 +130,8 @@
 
 <script>
 import ArticleService from "../../service/articleService";
+import { mapMutations, mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -142,16 +143,22 @@ export default {
       categoryId: ""
     };
   },
+  computed: {
+    ...mapGetters(["viewCountArr"])
+  },
 
   methods: {
     toDetail(id) {
-      this.$router.push({ path: `/view/${id}` });
+      const that = this;
+      this.$router.push({
+        name: "view",
+        params: {
+          id: id
+        }
+      });
     },
-    prevClick() {
-      this.getArticleList("", this.currentPage - 1);
-    },
-    nextClick() {
-      this.getArticleList("", this.currentPage + 1);
+    handleCurrentChange(page) {
+      this.getArticleList("", page);
     },
 
     async getArticleList(id, page) {
@@ -163,8 +170,15 @@ export default {
       } else {
         categoryId = this.categoryId;
       }
+      let currentPage = "";
+      if (page) {
+        currentPage = page;
+      } else {
+        currentPage = this.currentPage;
+      }
+      this.setCurrentpage(currentPage);
       const params = {
-        page: page,
+        page: currentPage,
         pageSize: this.pageSize,
         categoryId: categoryId
       };
@@ -173,12 +187,33 @@ export default {
         if (data) {
           this.articleList = data.articleList;
           this.pageTotal = data.length;
+          this.handleViewCountArr(data.articleList);
         }
       } catch (err) {
         this.$message.error(err);
       }
       this.loading = false;
-    }
+    },
+
+    handleViewCountArr(list) {
+      const that = this;
+      let arr = [];
+      console.log("-----",list);
+      list.forEach(ele => {
+        const temp = {
+          id: ele.id,
+          viewCount: ele.viewCounts
+        };
+        arr.push(temp)
+      });
+      console.log('=====',arr);
+      this.setViewCountArr(arr);
+    },
+
+    ...mapMutations({
+      setCurrentpage: "SET_CASH_CURRENTPAGE",
+      setViewCountArr: "SET_VIEWCOUNTARR"
+    })
   }
 };
 </script>

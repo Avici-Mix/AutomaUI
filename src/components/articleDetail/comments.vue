@@ -270,6 +270,7 @@
 <script>
 import commentService from "../../service/commentService";
 import LoginBar from "../user/login.vue";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -278,28 +279,25 @@ export default {
       textarea: "",
       visibleArr: [],
       textValues: [],
-      commentCounts: "",
+      commentCounts: ""
     };
   },
   components: {
-    LoginBar,
+    LoginBar
   },
   props: {
     comments: {
-      type: Array,
+      type: Array
     },
-    articleId: {
-      type: String,
-    },
+    articleId: {}
   },
   watch: {
     comments: {
       handler(newVal, oldVal) {
-        console.log("newVal", newVal);
         this.handlerVisibleArr(newVal);
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   computed: {
     user() {
@@ -307,6 +305,7 @@ export default {
       let avatar = this.$store.state.avatar;
       return { isLogin, avatar };
     },
+    ...mapGetters(["cash"])
   },
   methods: {
     cancleParentReply(index) {
@@ -334,7 +333,7 @@ export default {
 
         visibles.childrenVis = [];
         if (comment.childrens.length > 0) {
-          comment.childrens.forEach((children) => {
+          comment.childrens.forEach(children => {
             num++;
 
             // 二级评论框内容
@@ -379,13 +378,16 @@ export default {
         content: this.textarea,
         parent: null,
         toUserId: null,
+        articleCategoryId: this.cash.categoryId,
+        articlePage: this.cash.currentPage,
+        articlePageSize: 10
       };
       const url = "comments/create/change";
       try {
         await commentService.post(url, params);
         this.textarea = "";
         this.$emit("fetchComments");
-        this.$message.success($t('commentSuccess'));
+        this.$message.success($t("commentSuccess"));
       } catch (err) {
         this.$message.error(err);
       }
@@ -403,13 +405,16 @@ export default {
         content: this.textValues[index].textParent,
         parent: comment.id,
         toUserId: null,
+        articleCategoryId: this.cash.categoryId,
+        articlePage: this.cash.currentPage,
+        articlePageSize: 10
       };
       const url = "comments/create/change";
       try {
         await commentService.post(url, params);
         this.textValues[index].textParent = "";
         this.$emit("fetchComments");
-        this.$message.success($t('commentSuccess'));
+        this.$message.success($t("commentSuccess"));
       } catch (err) {
         this.$message.error(err);
       }
@@ -428,18 +433,21 @@ export default {
         content: this.textValues[index].childrenText[indx],
         parent: comment.id,
         toUserId: commentChildren.author.id,
+        articleCategoryId: this.cash.categoryId,
+        articlePage: this.cash.currentPage,
+        articlePageSize: 10
       };
       const url = "comments/create/change";
       try {
         await commentService.post(url, params);
         this.textValues[index].childrenText[indx] = "";
         this.$emit("fetchComments");
-        this.$message.success($t('commentSuccess'));
+        this.$message.success($t("commentSuccess"));
       } catch (err) {
         this.$message.error(err);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

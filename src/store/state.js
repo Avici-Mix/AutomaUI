@@ -1,4 +1,4 @@
-import {getToken} from '@/request/token'
+import { getToken } from "@/request/token";
 
 const state = {
   id: "",
@@ -6,6 +6,11 @@ const state = {
   name: "",
   avatar: "",
   token: getToken(),
+  cash: {
+    currentPage: 1,
+    categoryId: 1
+  },
+  viewCountArr:[]
 };
 
 export default state;
