@@ -30,31 +30,31 @@
 <script>
 import userBar from "./user/userbar.vue";
 import CategoryService from "../service/categoryService";
-import {mapMutations} from "vuex"
+import { mapMutations } from "vuex";
 
 export default {
   name: "headBar",
   components: {
-    userBar,
+    userBar
   },
   props: {
     isPublish: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   data() {
     return {
       defaultIndex: "",
       activeIndex2: "1",
-      categoryArr: [],
+      categoryArr: []
     };
   },
   computed: {
     user() {
       let isLogin = this.$store.state.account.length != 0;
       return { isLogin };
-    },
+    }
   },
   created() {
     this.getCategory();
@@ -82,9 +82,9 @@ export default {
       }
     },
     ...mapMutations({
-      setCategoryId:'SET_CASH_CATEGORYID'
+      setCategoryId: "SET_CASH_CATEGORYID"
     })
-  },
+  }
 };
 </script>
 
@@ -133,6 +133,8 @@ export default {
   .icon {
     cursor: pointer;
     padding: 10px;
+    height: 65%;
+    width: 3%;
   }
 }
 </style>

@@ -12,6 +12,7 @@
         class="hotArticle_articel"
         v-for="article in hotArticles"
         v-bind:key="article.id"
+        @click="toDetail(article.id)"
       >
         <el-link type="primary">{{ article.title }}</el-link>
       </div>
@@ -23,7 +24,10 @@
         v-for="archive in archives"
         v-bind:key="archive.id"
       >
-        <el-link type="primary">{{ archive.year }}{{$t('year')}}{{archive.month}}{{$t('month')}}({{archive.count}})</el-link>
+        <el-link type="primary"
+          >{{ archive.year }}{{ $t("year") }}{{ archive.month
+          }}{{ $t("month") }}({{ archive.count }})</el-link
+        >
       </div>
     </div>
     <div class="newArticle">
@@ -32,6 +36,7 @@
         class="newArticle_articel"
         v-for="article in newArticles"
         v-bind:key="article.id"
+        @click="toDetail(article.id)"
       >
         <el-link type="primary">{{ article.title }}</el-link>
       </div>
@@ -90,7 +95,7 @@ export default {
       hottags: [],
       hotArticles: [],
       newArticles: [],
-      archives: [],
+      archives: []
     };
   },
   created() {
@@ -100,6 +105,15 @@ export default {
     this.getArchives();
   },
   methods: {
+    toDetail(id) {
+      const that = this;
+      this.$router.push({
+        name: "view",
+        params: {
+          id: id
+        }
+      });
+    },
     async getHotTags() {
       try {
         const url = "tag/hot";
@@ -135,8 +149,8 @@ export default {
       } catch (error) {
         this.$message.error(error);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

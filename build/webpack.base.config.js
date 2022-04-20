@@ -19,6 +19,9 @@ module.exports = {
       "@": resolve("src"),
     },
   },
+  externals:{
+    'vuex':'Vuex',
+  },
   module: {
     rules: [
       {

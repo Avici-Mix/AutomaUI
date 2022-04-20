@@ -4,7 +4,7 @@ import axios from "axios";
 import { Message } from "element-ui";
 
 const service = axios.create({
-  baseURL: "http://localhost:9091",
+  baseURL: "http://47.95.122.63:9091",
   crossdomain: true,
   timeout: 10000,
 });

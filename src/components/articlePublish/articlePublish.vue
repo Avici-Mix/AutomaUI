@@ -115,6 +115,8 @@
   .icon {
     cursor: pointer;
     padding: 10px;
+    height: 65%;
+    width: 3%;
   }
 }
 
@@ -205,31 +207,31 @@ export default {
             trash: true, // 清空
             navigation: true, // 导航目录
             //subfield: true, // 单双栏模式
-            preview: true, // 预览
-          },
-        },
+            preview: true // 预览
+          }
+        }
       },
       rules: {
         summary: [
           {
             required: true,
             message: $t("placeholder.Summary"),
-            trigger: "blur",
+            trigger: "blur"
           },
-          { max: 80, message: "", trigger: "blur" },
+          { max: 80, message: "", trigger: "blur" }
         ],
         category: [
-          { required: true, message: $t("categoryPlace"), trigger: "change" },
+          { required: true, message: $t("categoryPlace"), trigger: "change" }
         ],
         tags: [
           {
             type: "array",
             required: true,
             message: $t("placeholder.label"),
-            trigger: "change",
-          },
-        ],
-      },
+            trigger: "change"
+          }
+        ]
+      }
     };
   },
   methods: {
@@ -250,13 +252,13 @@ export default {
     async publishArticle() {
       const $t = this.$t.bind(this);
       const that = this;
-      const category = this.categorys.find((item) => {
+      const category = this.categorys.find(item => {
         return item.categoryName == that.articleForm.category;
       });
       const tags = [];
 
-      this.tags.forEach((item) => {
-        that.articleForm.tags.forEach((tag) => {
+      this.tags.forEach(item => {
+        that.articleForm.tags.forEach(tag => {
           if (tag == item.id) {
             tags.push(item);
           }
@@ -270,8 +272,8 @@ export default {
         tags: tags,
         body: {
           content: this.articleForm.editor.value,
-          contentHtml: this.articleForm.editor.ref.d_render,
-        },
+          contentHtml: this.articleForm.editor.ref.d_render
+        }
       };
 
       const url = "/article/publish";
@@ -311,21 +313,21 @@ export default {
       this.$confirm($t("cancelTip"), $t("tip"), {
         confirmButtonText: $t("confirm"),
         cancelButtonText: $t("cancel"),
-        type: "warning",
+        type: "warning"
       }).then(() => {
         this.$router.push("/");
       });
     },
     submitFrom(articleForm) {
-      this.$refs.articleForm.validate((valid) => {
+      this.$refs.articleForm.validate(valid => {
         if (valid) {
           this.publishArticle();
         } else {
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
