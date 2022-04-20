@@ -162,11 +162,15 @@ import headerBar from "../header.vue";
 import categoryService from "../../service/categoryService";
 import tagService from "../../service/tagService";
 import articleService from "../../service/articleService";
+import { mapGetters } from "vuex";
 export default {
   components: { headerBar, MarkdownEditor, UserBar },
   name: "ArticlePublish",
   created() {
     this.fetchArticle();
+  },
+  computed: {
+    ...mapGetters(["cash", "viewCountArr"])
   },
   data() {
     const $t = this.$t.bind(this);
@@ -237,9 +241,14 @@ export default {
   methods: {
     async fetchArticle() {
       try {
+        const params = {
+          categoryId: this.cash.categoryId,
+          page: this.cash.currentPage,
+          pageSize: 10
+        };
         this.editArticleId = this.$route.params.articleId;
         const url = `article/view/${this.editArticleId}`;
-        const { data } = await articleService.post(url);
+        const { data } = await articleService.post(url, params);
         this.articleForm.id = data.id;
         this.articleForm.title = data.title;
         this.articleForm.summary = data.summary;
