@@ -372,6 +372,7 @@ export default {
       const $t = this.$t.bind(this);
       if (!this.textarea) {
         this.$message.error($t("commentNoNull"));
+        return;
       }
       const params = {
         articleId: this.articleId,
