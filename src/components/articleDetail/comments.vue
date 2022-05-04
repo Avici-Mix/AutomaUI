@@ -13,7 +13,7 @@
           type="textarea"
           :placeholder="$t('placeholderComment')"
           v-model="textarea"
-          maxlength="100"
+          maxlength="400"
           show-word-limit
           :rows="2"
         >
@@ -64,7 +64,7 @@
               type="textarea"
               :placeholder="$t('placeholderReply')"
               v-model="textValues[index].textParent"
-              maxlength="100"
+              maxlength="400"
               show-word-limit
               :rows="2"
             >
@@ -129,7 +129,7 @@
                     type="textarea"
                     :placeholder="$t('placeholderReply')"
                     v-model="textValues[index].childrenText[indx]"
-                    maxlength="100"
+                    maxlength="400"
                     show-word-limit
                     :rows="2"
                   >
@@ -261,7 +261,7 @@
 
   >>> {
     .el-textarea__inner {
-      font-size: 30px;
+      font-size: 15px;
     }
   }
 }
