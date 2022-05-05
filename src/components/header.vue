@@ -15,19 +15,17 @@
       >
     </el-menu>
     <div class="headerBar_right">
-      <div
-        class="writeArticle"
-        v-if="user.isLogin && isPublish"
-        @click="toPublish"
-      >
+      <div class="writeArticle" v-if="isPublish" @click="toPublish">
         {{ $t("writeArticle") }}
       </div>
       <user-bar></user-bar>
+      <login-bar ref="login"></login-bar>
     </div>
   </div>
 </template>
 
 <script>
+import LoginBar from "./user/login.vue";
 import userBar from "./user/userbar.vue";
 import CategoryService from "../service/categoryService";
 import { mapMutations } from "vuex";
@@ -35,7 +33,8 @@ import { mapMutations } from "vuex";
 export default {
   name: "headBar",
   components: {
-    userBar
+    userBar,
+    LoginBar
   },
   props: {
     isPublish: {
@@ -64,7 +63,15 @@ export default {
       this.$router.push({ path: `/` });
     },
     toPublish() {
-      this.$router.push({ path: `/publish` });
+      if (!this.user.isLogin) {
+        const { login } = this.$refs;
+        if (login) {
+          login.visible = true;
+        }
+      }else{
+
+        this.$router.push({ path: `/publish` });
+      }
     },
     handleSelect(key, keyPath) {
       this.$emit("fetchCategory", key);
