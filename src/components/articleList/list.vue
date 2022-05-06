@@ -191,8 +191,8 @@ export default {
       this.loading = false;
     },
 
-    
     async getArticleListByTag(tagId) {
+      this.articleList = [];
       this.loading = true;
       const params = {
         page: 1,
@@ -200,7 +200,30 @@ export default {
         tagId: tagId
       };
       try {
-        const { data } = await ArticleService.post("", params);
+        const url = "article/tag";
+        const { data } = await ArticleService.post(url, params);
+        if (data) {
+          this.articleList = data.articleList;
+          this.handleViewCountArr(data.articleList);
+        }
+      } catch (err) {
+        this.$message.error(err);
+      }
+      this.loading = false;
+    },
+
+    async getArticleListByArchive(year, month) {
+      this.articleList = [];
+      this.loading = true;
+      const params = {
+        page: 1,
+        pageSize: 100,
+        year: year,
+        month: month
+      };
+      try {
+        const url = "article/tag";
+        const { data } = await ArticleService.post(url, params);
         if (data) {
           this.articleList = data.articleList;
           this.handleViewCountArr(data.articleList);

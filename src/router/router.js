@@ -35,6 +35,11 @@ const router = new VueRouter({
       component:()=>
         import("../components/tag/tag.vue"),
         name: "tag"
+    },
+    {
+      path:"/archive",
+      component:()=> import("../components/archive/archive.vue"),
+      name:"archive"
     }
   ]
 });

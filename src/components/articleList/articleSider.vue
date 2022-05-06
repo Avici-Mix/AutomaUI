@@ -29,6 +29,7 @@
         class="archives_articel"
         v-for="archive in archives"
         v-bind:key="archive.id"
+        @click="toArchive(archive)"
       >
         <el-link type="primary"
           >{{ archive.year }}{{ $t("year") }}{{ archive.month
@@ -52,7 +53,7 @@
 
 <style lang="scss" scoped>
 .hottag {
-  box-shadow: 5px 5px 5pxrgb(238, 229, 229);
+  box-shadow: 5px 5px 5px rgb(238, 229, 229);
   &_title {
     font-size: 19px;
     font-weight: 600;
@@ -63,7 +64,7 @@
     font-size: 14px;
     cursor: pointer;
   }
-  width: 280px;
+  width: 320px;
   background: white;
   padding: 10px 20px 20px 20px;
   margin-left: 16px;
@@ -73,7 +74,7 @@
 .archives,
 .newArticle,
 .hotArticle {
-  width: 280px;
+  width: 320px;
   background: white;
   padding: 10px 20px 20px 20px;
   margin-left: 16px;
@@ -111,6 +112,14 @@ export default {
         name: "tag",
         params: {
           tagId: tagId
+        }
+      });
+    },
+    toArchive(archive) {
+      this.$router.push({
+        name: "archive",
+        params: {
+          archives: archive
         }
       });
     },

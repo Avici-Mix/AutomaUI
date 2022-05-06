@@ -9,12 +9,19 @@
     </div>
     <div class="body">
       <el-menu
-        :default-active="defaultTag"
+        :default-active="defaultArchive"
         class="el-menu-vertical-demo"
         @select="handleSelect"
       >
-        <el-menu-item v-for="tag in tags" v-bind:key="tag.id" :index="tag.id">
-          <span slot="title">{{ tag.tagName }}</span>
+        <el-menu-item
+          v-for="archive in archives"
+          v-bind:key="archive.id"
+          :index="handleIndex(archive)"
+        >
+          <span slot="title">
+            {{ archive.year }}{{ $t("year") }}{{ archive.month
+            }}{{ $t("month") }}</span
+          >
         </el-menu-item>
       </el-menu>
       <article-list class="list" ref="list" style="width:949px;"></article-list>
@@ -70,53 +77,62 @@
 <script>
 import ArticleList from "../articleList/list.vue";
 import UserBar from "../user/userbar.vue";
-import tagService from "../../service/tagService.js";
+import articleService from "../../service/articleService.js";
 export default {
   components: {
     UserBar,
     ArticleList
   },
   created() {
-    this.initTags();
+    this.initArchives();
   },
   data() {
     return {
-      tags: "",
+      archives: "",
       loading: false,
-      defaultTag: ""
+      defaultArchive: ""
     };
   },
   methods: {
     backHome() {
       this.$router.push({ path: `/` });
     },
+    handleIndex(archive) {
+      return String(archive.year) + String(archive.month);
+    },
+
     handleSelect(key, keyPath) {
       const { list } = this.$refs;
       if (list) {
-        list.getArticleListByTag(key);
+        list.getArticleListByArchive(key.substring(0, 4), key.substring(4));
       }
     },
 
-    async initTags() {
+    async initArchives() {
       try {
-        this.loading = true;
-        const url = "tag";
-        const { data } = await tagService.get(url);
-        this.tags = data;
+        const url = "article/listArchives";
+        const { data } = await articleService.post(url);
+        this.archives = data;
         this.fetchArticle();
       } catch (error) {
         this.$message.error(error);
       }
     },
     fetchArticle() {
-      if (this.$route.params.tagId) {
-        this.defaultTag = this.$route.params.tagId;
-      } else {
-        this.defaultTag = this.tags[0].id;
-      }
       const { list } = this.$refs;
+      let archive = this.$route.params.archives;
+      if (archive) {
+        this.defaultArchive = String(archive.year) + String(archive.month);
+      } else {
+        this.defaultArchive =
+          String(this.archives[0].year) + String(this.archives[0].month);
+      }
+
       if (list) {
-          list.getArticleListByTag(this.defaultTag);
+        list.getArticleListByArchive(
+          this.defaultArchive.substring(0, 4),
+          this.defaultArchive.substring(4)
+        );
       }
     }
   }
@@ -124,4 +140,10 @@ export default {
 </script>
 
 <i18n>
+zh:
+  year: 年
+  month: 月
+en:
+  year: year
+  month: month
 </i18n>
