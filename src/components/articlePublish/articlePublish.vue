@@ -2,7 +2,7 @@
   <div class="publish">
     <div class="headerBar">
       <img class="icon" src="../../images/robotIcon.png" @click="backHome" />
-      <div class="text" @click="backHome">Aumto</div>
+      <div class="text" @click="backHome">Automa</div>
       <div class="headerBar_right">
         <div class="operate">
           <el-button @click="cancel">{{ $t("cancel") }}</el-button>
@@ -115,8 +115,6 @@
   .icon {
     cursor: pointer;
     padding: 10px;
-    height: 65%;
-    width: 3%;
   }
 }
 

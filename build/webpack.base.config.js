@@ -67,6 +67,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HTMLWebpackPlugin({
       template: path.resolve(__dirname, "../src/index.html"),
+      favicon:'./src/images/favicon.ico'
     }),
     new EncodingPlugin({
         encoding: 'UTF-8'

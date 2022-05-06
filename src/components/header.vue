@@ -1,7 +1,7 @@
 <template>
   <div class="headerBar">
     <img class="icon" src="../images/robotIcon.png" @click="backHome" />
-    <div class="text" @click="backHome">Aumto</div>
+    <div class="text" @click="backHome">Automa</div>
     <el-menu
       :default-active="defaultIndex"
       mode="horizontal"
@@ -140,8 +140,6 @@ export default {
   .icon {
     cursor: pointer;
     padding: 10px;
-    height: 65%;
-    width: 3%;
   }
 }
 </style>

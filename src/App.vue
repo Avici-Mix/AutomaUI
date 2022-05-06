@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" v-title data-title="Aotuma">
     <router-view></router-view>
   </div>
 </template>
