@@ -185,7 +185,6 @@ export default {
     },
     toEdit() {
       const that = this;
-      console.log("that.article.id", that.article.id);
       this.$router.push({
         name: "publish",
         params: {
@@ -201,7 +200,6 @@ export default {
           page: this.cash.currentPage,
           pageSize: 10,
         };
-        console.log("param  ---------",params);
         const url = `article/view/${this.$route.params.id}`;
         const { data } = await articleService.post(url, params);
         Object.assign(this.article, data);

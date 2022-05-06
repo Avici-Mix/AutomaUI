@@ -428,7 +428,6 @@ export default {
       if (!this.textValues[index].childrenText[indx]) {
         this.$message.error($t("commentNoNull"));
       }
-      console.log(commentChildren);
       const params = {
         articleId: this.articleId,
         content: this.textValues[index].childrenText[indx],

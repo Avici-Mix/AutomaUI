@@ -4,7 +4,7 @@ import axios from "axios";
 import { Message } from "element-ui";
 
 const service = axios.create({
-  baseURL: "http://47.95.122.63:9091",
+  baseURL: "http://localhost:9091",
   crossdomain: true,
   timeout: 10000,
 });
@@ -26,7 +26,6 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
-    console.log('response',response);
     // 超时的全局处理
     if (response.headers["session_time_out"] == "timeout") {
       store.dispatch("fedLogOut");

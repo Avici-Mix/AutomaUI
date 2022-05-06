@@ -29,6 +29,12 @@ const router = new VueRouter({
       component: () =>
         import("../components/articlePublish/articlePublish.vue"),
       name: "publish"
+    },
+    {
+      path:"/tag",
+      component:()=>
+        import("../components/tag/tag.vue"),
+        name: "tag"
     }
   ]
 });

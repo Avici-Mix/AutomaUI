@@ -2,9 +2,15 @@
   <div class="sider">
     <div class="hottag">
       <div class="hottag_title">{{ $t("hottag") }}</div>
-      <span class="hottag_tag" v-for="tag in hottags" v-bind:key="tag.id">
-        {{ tag.tagName }}
-      </span>
+      <el-tag
+        size="medium"
+        class="hottag_tag"
+        v-for="tag in hottags"
+        v-bind:key="tag.id"
+        @click="toTag(tag.id)"
+      >
+        {{ tag.tagName }}</el-tag
+      >
     </div>
     <div class="hotArticle">
       <div class="hotArticle_title">{{ $t("hotArticle") }}</div>
@@ -46,21 +52,16 @@
 
 <style lang="scss" scoped>
 .hottag {
-  box-shadow: 5px 5px 5px rgb(238, 229, 229);
+  box-shadow: 5px 5px 5pxrgb(238, 229, 229);
   &_title {
     font-size: 19px;
     font-weight: 600;
     margin-bottom: 30px;
   }
   &_tag {
-    display: inline-block;
-    font-size: 15px;
-    margin-right: 9px;
-    color: #2c95fd;
-    background: #e6e6e6;
-    padding: 2px 5px;
-    border-radius: 13%;
-    margin-bottom: 5px;
+    margin: 2px;
+    font-size: 14px;
+    cursor: pointer;
   }
   width: 280px;
   background: white;
@@ -105,6 +106,14 @@ export default {
     this.getArchives();
   },
   methods: {
+    toTag(tagId) {
+      this.$router.push({
+        name: "tag",
+        params: {
+          tagId: tagId
+        }
+      });
+    },
     toDetail(id) {
       const that = this;
       this.$router.push({

@@ -21,16 +21,13 @@
           <i class="auto-icon-view"></i>
           <span>{{ article.viewCounts }}</span>
         </div>
-        <!-- <div class="likeCounts">
-          <i class="auto-icon-like"></i><span>{{ article.likeCounts }}</span>
-        </div> -->
         <div class="commentCounts">
           <i class="auto-icon-comment"></i
           ><span>{{ article.commentCounts }}</span>
         </div>
-        <div class="tag" v-for="tag in article.tags" v-bind:key="tag.id">
-          {{ tag.tagName }}
-        </div>
+        <el-tag size="mini" v-for="tag in article.tags" v-bind:key="tag.id">{{
+          tag.tagName
+        }}</el-tag>
       </div>
       <div></div>
     </div>
@@ -53,7 +50,6 @@
   cursor: pointer;
   background: white;
   padding: 10px 20px;
-  box-shadow: 5px 5px 5px rgb(238, 229, 229);
   &_head {
     display: flex;
     flex-direction: row;
@@ -195,18 +191,36 @@ export default {
       this.loading = false;
     },
 
+    
+    async getArticleListByTag(tagId) {
+      this.loading = true;
+      const params = {
+        page: 1,
+        pageSize: 100,
+        tagId: tagId
+      };
+      try {
+        const { data } = await ArticleService.post("", params);
+        if (data) {
+          this.articleList = data.articleList;
+          this.handleViewCountArr(data.articleList);
+        }
+      } catch (err) {
+        this.$message.error(err);
+      }
+      this.loading = false;
+    },
+
     handleViewCountArr(list) {
       const that = this;
       let arr = [];
-      console.log("-----",list);
       list.forEach(ele => {
         const temp = {
           id: ele.id,
           viewCount: ele.viewCounts
         };
-        arr.push(temp)
+        arr.push(temp);
       });
-      console.log('=====',arr);
       this.setViewCountArr(arr);
     },
 
