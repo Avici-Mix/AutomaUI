@@ -25,7 +25,7 @@
           <i class="auto-icon-comment"></i
           ><span>{{ article.commentCounts }}</span>
         </div>
-        <el-tag size="mini" v-for="tag in article.tags" v-bind:key="tag.id">{{
+        <el-tag class="tag" size="mini" v-for="tag in article.tags" v-bind:key="tag.id">{{
           tag.tagName
         }}</el-tag>
       </div>
@@ -107,11 +107,7 @@
       }
     }
     .tag {
-      margin-left: 4px;
-      color: #2c95fd;
-      background: #e6e6e6;
-      padding: 3px;
-      border-radius: 20%;
+      margin-right: 5px;
     }
   }
 }
